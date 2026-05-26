@@ -40,8 +40,8 @@ const Navbar = () => {
               <li key={link.path}>
                 <Link
                   to={link.path}
-                  className={`font-medium transition-colors relative pb-1 ${location.pathname === link.path
-                    ? "text-brand after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-brand"
+                  className={`nav-link-underline font-medium transition-colors relative pb-1 ${location.pathname === link.path
+                    ? "is-active text-brand"
                     : "text-text-base hover:text-brand"
                     }`}
                 >
