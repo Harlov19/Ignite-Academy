@@ -8,16 +8,17 @@ if (!access_secret || !refresh_secret) {
 }
 
 export function setToken(res, payload) {
-    // 1. Create Access Token (Short-lived)
+    // Create Access Token (Short-lived)
     const accessToken = jwt.sign(payload, access_secret, { expiresIn: '15m' });
 
-    // 2. Create Refresh Token (Long-lived)
+    //  Create Refresh Token (Long-lived)
     const refreshToken = jwt.sign(payload, refresh_secret, { expiresIn: '7d' });
 
     const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax', // Protects against CSRF while allowing navigation
+       
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
         path: '/',
     };
 
@@ -38,7 +39,7 @@ export function removeToken(res) {
     const clearOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         path: '/',
     };
 

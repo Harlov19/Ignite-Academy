@@ -5,8 +5,13 @@ import 'dotenv/config';
 
 const connectionString = process.env.DATABASE_URL;
 
-// 1. Create the Pool and Adapter
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
 
+const pool = new Pool({ 
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false 
+  }
+});
+
+const adapter = new PrismaPg(pool);
 export const prisma = new PrismaClient({ adapter });
