@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams, useSearchParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, useLocation } from "react-router-dom"
 import {
   ChevronLeft,
   CheckCircle,
@@ -14,28 +14,35 @@ import { verifyPaymentSession, updateLessonProgress } from "../../../service/stu
 
 const CoursePlayer = () => {
   const { courseId } = useParams();
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
-  const isSuccessRedirect = searchParams.get("success") === "true";
 
   const [course, setCourse] = useState(null);
   const [currentLesson, setCurrentLesson] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [verifying, setVerifying] = useState(isSuccessRedirect);
+  const [verifying, setVerifying] = useState(false);
   const [verificationError, setVerificationError] = useState(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const success = params.get("success");
+
     const initPlayer = async () => {
       try {
-        // 1. If coming from Stripe success, trigger manual verification fallback
-        if (isSuccessRedirect) {
+        if (success === "true") {
+          setVerifying(true);
           try {
             await verifyPaymentSession(courseId);
+            // Redirect completely out to the user's dashboard!
+            navigate("/dashboard/my-courses", { replace: true });
+            return; // Stop execution here since we are redirecting
           } catch (err) {
             console.error("Manual verification failed:", err);
-            setVerificationError(err.message || "Could not verify payment. Please try refreshing or contact support.");
-          } finally {
-            setVerifying(false);
+            // If verification fails during testing or actual use, 
+            // still clean the URL and redirect them, or show error.
+            // Based on your snippet, you want to redirect.
+            navigate("/dashboard/my-courses", { replace: true });
+            return;
           }
         }
 
@@ -44,19 +51,21 @@ const CoursePlayer = () => {
         const courseData = data.data;
         setCourse(courseData);
 
-        // 3. Set initial lesson if available
         if (courseData.modules?.[0]?.lessons?.[0]) {
           setCurrentLesson(courseData.modules[0].lessons[0]);
         }
       } catch (error) {
         console.error("Player initialization error:", error);
       } finally {
-        setLoading(false);
+        if (success !== "true") {
+          setLoading(false);
+          setVerifying(false);
+        }
       }
     };
 
     initPlayer();
-  }, [courseId, isSuccessRedirect]);
+  }, [courseId, location.search, navigate]);
 
   if (loading || verifying) {
     return (
