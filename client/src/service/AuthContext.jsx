@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     loadUser()
   }, [])
 
-  // ✅ LOGIN FUNCTION (missing piece)
+  //  LOGIN FUNCTION (missing piece)
   const login = (userData) => {
     setUser(userData)
   }
