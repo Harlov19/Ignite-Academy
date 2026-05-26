@@ -42,6 +42,6 @@ export function removeToken(res) {
         path: '/',
     };
 
-    res.cookie('token', '', { ...clearOptions, expires: new Date(0) });
-    res.cookie('rft', '', { ...clearOptions, expires: new Date(0) });
+    res.clearCookie('token', clearOptions);
+    res.clearCookie('rft', clearOptions);
 }
