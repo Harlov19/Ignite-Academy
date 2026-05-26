@@ -66,6 +66,46 @@
     --feature-hover-y: -8px;
   }
 
+  .about-reveal {
+    opacity: 0;
+    --about-reveal-x: 0px;
+    --about-reveal-y: 18px;
+    transform: translate(var(--about-reveal-x), var(--about-reveal-y));
+    transition: opacity 650ms ease-out, transform 650ms ease-out;
+  }
+
+  .about-reveal-left {
+    --about-reveal-x: -24px;
+  }
+
+  .about-reveal-right {
+    --about-reveal-x: 24px;
+  }
+
+  .about-reveal.is-visible {
+    opacity: 1;
+    --about-reveal-x: 0px;
+    --about-reveal-y: 0px;
+  }
+
+  .about-image-glow {
+    animation: about-glow-pulse 5s ease-in-out infinite;
+    transition: opacity 300ms ease-out;
+  }
+
+  .group:hover .about-image-glow {
+    opacity: 0.9;
+  }
+
+  .about-image-hover {
+    transition: transform 450ms ease-out, box-shadow 450ms ease-out;
+  }
+
+  .group:hover .about-image-hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 28px 55px rgb(147 51 234 / 0.22);
+  }
+
   .feature-icon-float {
     --feature-icon-scale: 1;
     animation: feature-icon-float 4s ease-in-out infinite;
@@ -162,17 +202,36 @@
     }
   }
 
+  @keyframes about-glow-pulse {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 0.85;
+      transform: scale(1.04);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animate-hero-bg,
     .animate-hero-card,
     .animate-hero-item,
-    .feature-icon-float {
+    .feature-icon-float,
+    .about-image-glow {
       animation: none;
     }
 
-    .feature-reveal {
+    .feature-reveal,
+    .about-reveal {
       opacity: 1;
       transform: none;
+      transition: none;
+    }
+
+    .about-image-hover {
       transition: none;
     }
   }
