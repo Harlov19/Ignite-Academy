@@ -4,7 +4,13 @@
 
 A comprehensive, modern e-learning platform featuring a sleek React frontend and a robust Node.js backend. Ignite Academy enables user authentication, course browsing and enrollment, progress tracking, and secure payment processing.
 
-## 🚀 Features
+## 🌐 Live Deployments
+
+- **Live Application (Frontend)**: [https://ignite-academy.vercel.app](https://ignite-academy.vercel.app)
+- **Backend API**: [https://ignite-api-v9in.onrender.com](https://ignite-api-v9in.onrender.com)
+
+
+## Features
 
 - **User Authentication**: Secure signup and login flow leveraging JWT and `bcryptjs`.
 - **Course Management**: Explore available courses, enroll, and track your learning progress.
@@ -13,7 +19,7 @@ A comprehensive, modern e-learning platform featuring a sleek React frontend and
 - **Responsive & Modern UI**: Fast, accessible, and beautiful interface built with React 19, Vite, and Tailwind CSS 4.
 - **Type-Safe Database Interactions**: Solid and reliable Postgres database operations powered by Prisma ORM.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend (`/client`)
 - **Framework**: React 19 + Vite
@@ -31,7 +37,7 @@ A comprehensive, modern e-learning platform featuring a sleek React frontend and
 
 ---
 
-## ⚙️ Getting Started
+##  Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -126,6 +132,6 @@ ignite/
 └── README.md               # Project documentation
 ```
 
-## 📝 License
+##  License
 
 This project is licensed under the **ISC License**.
