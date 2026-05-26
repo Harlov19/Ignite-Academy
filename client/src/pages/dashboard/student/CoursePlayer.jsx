@@ -33,14 +33,12 @@ const CoursePlayer = () => {
           setVerifying(true);
           try {
             await verifyPaymentSession(courseId);
-            // Redirect completely out to the user's dashboard!
+            
             navigate("/dashboard/my-courses", { replace: true });
-            return; // Stop execution here since we are redirecting
+            return; 
           } catch (err) {
             console.error("Manual verification failed:", err);
-            // If verification fails during testing or actual use, 
-            // still clean the URL and redirect them, or show error.
-            // Based on your snippet, you want to redirect.
+           
             navigate("/dashboard/my-courses", { replace: true });
             return;
           }
