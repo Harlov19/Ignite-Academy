@@ -7,7 +7,7 @@ const api = axios.create({
   withCredentials: true,
 })
 
-//---- Refresh handling state ----
+// Refresh handling state 
 let isRefreshing = false
 let failedQueue = []
 
@@ -49,7 +49,7 @@ api.interceptors.response.use(
       isRefreshing = true
 
       try {
-        // Call refresh endpoint (uses HTTP-only cookie)
+      
         await api.post("/auth/refresh-token")
 
         processQueue(null)
