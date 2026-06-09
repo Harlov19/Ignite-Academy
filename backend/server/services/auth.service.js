@@ -59,10 +59,10 @@ export const refreshSession = async (refreshToken) => {
     if (!refreshToken) throw new Error('Refresh token missing');
 
     try {
-        // 1. Verify the refresh token
+        // Verify the refresh token
         const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-        // 2. Fetch user from DB to ensure they still exist/aren't banned
+        // Fetch user from DB to ensure they still exist/aren't banned
         const user = await prisma.user.findUnique({
             where: { id: decoded.id },
             select: { id: true, role: true, firstName: true },
@@ -77,18 +77,18 @@ export const refreshSession = async (refreshToken) => {
 };
 
 export const forgotPassword = async (email) => {
-    // 1. Check if user exists
+    //  Check if user exists
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) throw new Error('If a user with that email exists, a reset link has been sent.');
 
-    // 2. Create a random reset token (to send in email)
+    //  Create a random reset token (to send in email)
     const resetToken = crypto.randomBytes(32).toString('hex');
 
-    // 3. Hash the token (to store in DB) and set expiry (15 mins)
+    // Hash the token (to store in DB) and set expiry (15 mins)
     const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
     const tokenExpiry = new Date(Date.now() + 15 * 60 * 1000);
 
-    // 4. Save to Database
+    //  Save to Database
     await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -97,7 +97,7 @@ export const forgotPassword = async (email) => {
         },
     });
 
-    // 5. Construct Email
+    //  Construct Email
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
     const htmlMessage = `
@@ -125,10 +125,10 @@ export const forgotPassword = async (email) => {
 };
 
 export const resetPassword = async (token, newPassword) => {
-    // 1. Hash the token from the URL (to compare it with the DB version)
+    //  Hash the token from the URL (to compare it with the DB version)
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
-    // 2. Find the user with the matching token AND ensure it hasn't expired
+    //  Find the user with the matching token AND ensure it hasn't expired
     const user = await prisma.user.findFirst({
         where: {
             resetPasswordToken: hashedToken,
@@ -140,11 +140,11 @@ export const resetPassword = async (token, newPassword) => {
         throw new Error('Token is invalid or has expired');
     }
 
-    // 3. Hash the new password
+    //  Hash the new password
 
     const passwordHash = await hashPassword(newPassword);
 
-    // 4. Update the user and CLEAR the reset fields
+    //  Update the user and CLEAR the reset fields
     await prisma.user.update({
         where: { id: user.id },
         data: {
